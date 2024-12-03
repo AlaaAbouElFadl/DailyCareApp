@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.DailyCare" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/green_primary</item>
+        <item name="colorPrimaryVariant">@color/blue_home</item>
+        <item name="colorSecondary">@color/red_accent</item>
+
+        <item name="android:textColor">@android:color/black</item>
+
+    </style>
+
+
+</resources>

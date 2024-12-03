@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+    <!-- Wilkommen Text -->
+    <TextView
+        android:id="@+id/welcomeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wilkommen ..."
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+    <!-- Buttons Container -->
+    <LinearLayout
+        android:id="@+id/buttonsContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@id/navigationBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcomeText">
+
+        <!-- Erinnerungen Button -->
+        <LinearLayout
+            android:id="@+id/btnReminders"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:background="@drawable/btn_reminders_background"
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/bell"
+                app:tint="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="Erinnerungen"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Notfallkontakte Button -->
+        <LinearLayout
+            android:id="@+id/btnEmergencyContacts"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:background="@drawable/btn_emergency_background"
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/phone"
+                app:tint="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="Notfallkontakte"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Einstellungen Button -->
+        <LinearLayout
+            android:id="@+id/btnSettings"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:background="@drawable/btn_settings_background"
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/settings"
+                app:tint="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="Einstellungen"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+    <!-- Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/navigationBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="1"
+        android:layout_margin="10dp">
+
+        <!-- Home Icon -->
+        <ImageView
+            android:id="@+id/iconHome"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="15dp"
+            android:src="@drawable/home"
+            app:tint="@android:color/holo_blue_dark" />
+
+        <!-- Bell Icon -->
+        <ImageView
+            android:id="@+id/iconBell"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/bell"
+            app:tint="@color/green_primary"
+            android:layout_marginHorizontal="15dp" />
+
+        <!-- Phone Icon -->
+        <ImageView
+            android:id="@+id/iconPhone"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/phone"
+            app:tint="@color/red_accent"
+            android:layout_marginHorizontal="15dp" />
+
+        <!-- Settings Icon -->
+        <ImageView
+            android:id="@+id/iconSettings"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/settings"
+            app:tint="@color/purple_secondary"
+            android:layout_marginHorizontal="8dp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
