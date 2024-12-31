@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RemindersActivity">
+
+    <LinearLayout
+        android:id="@+id/toolbarContainer"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:orientation="horizontal"
+        android:background="@color/purple_secondary"
+        android:elevation="4dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:gravity="center_vertical">
+
+        <!-- Back-Icon -->
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/back"
+            android:contentDescription="back"
+            app:tint="@android:color/white"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="top" />
+
+        <!-- Titel -->
+        <TextView
+            android:id="@+id/toolbarTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Einstellungen"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="25dp"
+            android:gravity="center_vertical" />
+
+        <!-- Add-Icon -->
+        <ImageView
+            android:id="@+id/addButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/plus"
+            android:contentDescription="Hinzufügen"
+            app:tint="@android:color/white"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="25dp"
+            android:layout_gravity="bottom" />
+
+    </LinearLayout>
+
+
+    <!-- Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/navigationBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="1"
+        android:layout_margin="10dp">
+
+        <!-- Home Icon -->
+        <ImageView
+            android:id="@+id/iconHome"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="15dp"
+            android:src="@drawable/home"
+            app:tint="@android:color/holo_blue_dark" />
+
+        <!-- Bell Icon -->
+        <ImageView
+            android:id="@+id/iconBell"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/bell"
+            app:tint="@color/green_primary"
+            android:layout_marginHorizontal="15dp" />
+
+        <!-- Phone Icon -->
+        <ImageView
+            android:id="@+id/iconPhone"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/phone"
+            app:tint="@color/red_accent"
+            android:layout_marginHorizontal="15dp" />
+
+        <!-- Settings Icon -->
+        <ImageView
+            android:id="@+id/iconSettings"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/settings"
+            app:tint="@color/purple_secondary"
+            android:layout_marginHorizontal="8dp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

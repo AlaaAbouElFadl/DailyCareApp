@@ -16,6 +16,12 @@
             android:name=".RemindersActivity"
             android:exported="false" />
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmergencyContactsActivity"
+            android:exported="false" />
+        <activity
             android:name=".HomeActivity"
             android:exported="true" />
         <activity
