@@ -57,6 +57,70 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textSizeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Schriftgröße"
+        android:textSize="18sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbarContainer"
+        app:layout_constraintStart_toStartOf="parent" /> <!-- NEU -->
+
+    <SeekBar
+        android:id="@+id/textSizeSeekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@id/textSizeLabel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" /> <!-- NEU -->
+
+    <TextView
+        android:id="@+id/sampleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Beispieltext"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@id/textSizeSeekBar"
+        app:layout_constraintStart_toStartOf="parent" /> <!-- NEU -->
+
+    <!-- NEU: Benachrichtigungen -->
+    <TextView
+        android:id="@+id/notificationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Benachrichtigungen"
+        android:textSize="18sp"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@id/sampleText"
+        app:layout_constraintStart_toStartOf="parent" /> <!-- NEU -->
+
+    <Switch
+        android:id="@+id/medicationSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Medikamenten-Erinnerungen"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@id/notificationLabel"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Switch
+        android:id="@+id/securitySwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sicherheitsmaßnahmen-Erinnerungen"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@id/medicationSwitch"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Navigation Bar -->
     <LinearLayout
