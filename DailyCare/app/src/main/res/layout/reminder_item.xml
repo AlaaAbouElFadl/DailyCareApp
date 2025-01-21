@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:background="@drawable/reminder_item_background"
+    android:layout_marginBottom="8dp">
+
+    <!-- Icon für Erinnerung -->
+    <ImageView
+        android:id="@+id/reminderIcon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/meds"
+        android:contentDescription="Icon"
+        android:layout_marginEnd="8dp"
+        android:layout_gravity="center_vertical"/>
+
+    <!-- Titel der Erinnerung -->
+    <TextView
+        android:id="@+id/reminderTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Erinnerungstitel"
+        android:textSize="18sp"
+        android:paddingEnd="8dp" />
+
+    <!-- Uhrzeit -->
+    <TextView
+        android:id="@+id/reminderTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12:00"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Erledigt-Button -->
+    <Button
+        android:id="@+id/reminderDoneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Erledigt"
+        android:textSize="14sp"
+        android:padding="8dp"
+        android:background="@color/green"
+    android:textColor="@android:color/white" />
+</LinearLayout>
+

@@ -117,54 +117,21 @@
 
 
 
+    <!-- Hauptinhalt -->
+    <FrameLayout
+        android:id="@+id/contentFrame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/navigationBar" />
+
     <!-- Navigation Bar -->
-    <LinearLayout
-        android:id="@+id/navigationBar"
-        android:layout_width="0dp"
+    <include
+        layout="@layout/navigation_bar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="1"
-        android:layout_margin="10dp">
-
-        <!-- Home Icon -->
-        <ImageView
-            android:id="@+id/iconHome"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="15dp"
-            android:src="@drawable/home"
-            app:tint="@android:color/holo_blue_dark" />
-
-        <!-- Bell Icon -->
-        <ImageView
-            android:id="@+id/iconBell"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/bell"
-            app:tint="@color/green_primary"
-            android:layout_marginHorizontal="15dp" />
-
-        <!-- Phone Icon -->
-        <ImageView
-            android:id="@+id/iconPhone"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/phone"
-            app:tint="@color/red_accent"
-            android:layout_marginHorizontal="15dp" />
-
-        <!-- Settings Icon -->
-        <ImageView
-            android:id="@+id/iconSettings"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/settings"
-            app:tint="@color/purple_secondary"
-            android:layout_marginHorizontal="8dp" />
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

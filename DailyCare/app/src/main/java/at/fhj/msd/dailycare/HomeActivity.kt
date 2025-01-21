@@ -9,6 +9,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        NavigationBarHelper().setupNavigationBar(this)
 
         // Erinnerungen Button
         val btnReminders = findViewById<LinearLayout>(R.id.btnReminders)

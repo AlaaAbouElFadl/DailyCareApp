@@ -12,6 +12,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+        NavigationBarHelper().setupNavigationBar(this)
 
         val backButton = findViewById<ImageView>(R.id.backButton)
         backButton.setOnClickListener {
