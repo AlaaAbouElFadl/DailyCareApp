@@ -20,9 +20,6 @@ class NotificationHelper(private val context: Context) {
         const val CHANNEL_DESCRIPTION = "Benachrichtigungen für Erinnerungen"
     }
 
-    /**
-     * Erstellt den Notification-Kanal (nur für Android O und höher erforderlich).
-     */
     fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -39,12 +36,6 @@ class NotificationHelper(private val context: Context) {
         }
     }
 
-    /**
-     * Sendet sofort eine Benachrichtigung.
-     * @param reminderId Die eindeutige ID der Erinnerung.
-     * @param title Der Titel der Erinnerung.
-     * @param time Die Zeit der Erinnerung.
-     */
     fun sendNotification(reminderId: Int, title: String, time: String) {
         if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) {
             Toast.makeText(context, "Bitte Benachrichtigungen aktivieren", Toast.LENGTH_SHORT).show()
@@ -72,12 +63,6 @@ class NotificationHelper(private val context: Context) {
         }
     }
 
-    /**
-     * Plant eine Benachrichtigung zu einer bestimmten Zeit.
-     * @param reminderId Die eindeutige ID der Erinnerung.
-     * @param title Der Titel der Erinnerung.
-     * @param time Die Zeit der Erinnerung im Format "HH:mm".
-     */
     fun scheduleNotification(reminderId: Int, title: String, time: String, interval: Long) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         if (alarmManager == null) {
@@ -85,7 +70,6 @@ class NotificationHelper(private val context: Context) {
             return
         }
 
-        // Ab Android 12 prüfen, ob exakte Alarme erlaubt sind
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (!alarmManager.canScheduleExactAlarms()) {
                 Toast.makeText(
@@ -123,7 +107,6 @@ class NotificationHelper(private val context: Context) {
             set(Calendar.MINUTE, timeParts[1].toInt())
             set(Calendar.SECOND, 0)
 
-            // Falls die Zeit bereits vergangen ist, auf den nächsten Tag setzen
             if (before(Calendar.getInstance())) {
                 add(Calendar.DAY_OF_MONTH, 1)
             }
@@ -131,7 +114,6 @@ class NotificationHelper(private val context: Context) {
 
         try {
             if (interval > 0) {
-                // Wiederkehrende Benachrichtigung planen
                 alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP,
                     calendar.timeInMillis,
@@ -139,7 +121,6 @@ class NotificationHelper(private val context: Context) {
                     pendingIntent
                 )
             } else {
-                // Einmalige Benachrichtigung planen
                 alarmManager.setExactAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP,
                     calendar.timeInMillis,
@@ -154,6 +135,4 @@ class NotificationHelper(private val context: Context) {
             ).show()
         }
     }
-
-
 }

@@ -52,10 +52,6 @@ The app is designed to be **minimalist** and **accessible**, focusing on essenti
 
 ---
 
-## **Implemented Code Highlights**
-
-
-
 ### **Reminder Feature**
 - Implements a step-by-step flow for creating reminders:
   - Selecting the type (medication, security).

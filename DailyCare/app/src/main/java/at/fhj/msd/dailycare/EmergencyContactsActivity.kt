@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import at.fhj.msd.dailycare.data.*
 import android.net.Uri
+import android.view.ViewGroup
+import android.widget.TextView
+
 
 class EmergencyContactsActivity : AppCompatActivity() {
     private lateinit var db: AppDatabase
@@ -19,6 +22,7 @@ class EmergencyContactsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_emergency_contacts)
         NavigationBarHelper().setupNavigationBar(this)
+        updateGlobalTextSize()
 
         db = Room.databaseBuilder(
             applicationContext,
@@ -177,11 +181,36 @@ class EmergencyContactsActivity : AppCompatActivity() {
             .setTitle("${contact.name}")
             .setItems(options) { _, which ->
                 when (which) {
-                    0 -> showEditContactDialog(contact) // Bearbeiten
-                    1 -> deleteContact(contact) // Löschen
+                    0 -> showEditContactDialog(contact)
+                    1 -> deleteContact(contact)
                 }
             }
             .setNegativeButton("Abbrechen", null)
             .show()
+    }
+
+    //Schriftgröße
+    private fun updateGlobalTextSize() {
+        val sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE)
+        val textSize = sharedPreferences.getFloat("textSize", 14f)
+
+        val rootView = window.decorView.rootView
+        applyTextSizeToViewGroup(rootView, textSize)
+    }
+
+    private fun applyTextSizeToViewGroup(view: View, textSize: Float) {
+        when (view) {
+            is ViewGroup -> {
+
+                for (i in 0 until view.childCount) {
+                    applyTextSizeToViewGroup(view.getChildAt(i), textSize)
+                }
+            }
+            is TextView -> {
+                if (view.id != R.id.toolbarTitle) {
+                    view.textSize = textSize
+                }
+            }
+        }
     }
 }

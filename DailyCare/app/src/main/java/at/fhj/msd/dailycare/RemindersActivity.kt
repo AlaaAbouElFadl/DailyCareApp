@@ -13,6 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.room.Room
 import at.fhj.msd.dailycare.data.*
+import android.view.ViewGroup
+import android.widget.TextView
+import java.util.Calendar
+
 
 class RemindersActivity : AppCompatActivity() {
 
@@ -23,6 +27,7 @@ class RemindersActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reminders)
         NavigationBarHelper().setupNavigationBar(this)
+        updateGlobalTextSize()
 
         db = Room.databaseBuilder(
             applicationContext,
@@ -129,8 +134,6 @@ class RemindersActivity : AppCompatActivity() {
             .show()
     }
 
-
-
     private fun showReminderOptionsDialog(reminder: ReminderEntity) {
         val options = arrayOf("Bearbeiten", "Löschen")
         AlertDialog.Builder(this)
@@ -144,7 +147,6 @@ class RemindersActivity : AppCompatActivity() {
             .setNegativeButton("Abbrechen", null)
             .show()
     }
-
 
     private fun showEditReminderDialog(reminder: ReminderEntity) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_reminder, null)
@@ -227,7 +229,6 @@ class RemindersActivity : AppCompatActivity() {
             .show()
     }
 
-
     private fun showTimePickerDialog(callback: (String) -> Unit) {
         val currentHour = 12
         val currentMinute = 0
@@ -260,12 +261,11 @@ class RemindersActivity : AppCompatActivity() {
                         interval
                     )
                 } else {
-                    // Einmalige Benachrichtigung
                     NotificationHelper(this).scheduleNotification(
                         reminderId.toInt(),
                         reminder.title,
                         reminder.time,
-                        0L // Kein Wiederholungsintervall
+                        0L
                     )
                 }
 
@@ -273,7 +273,6 @@ class RemindersActivity : AppCompatActivity() {
             }
         }.start()
     }
-
 
     private fun updateReminder(updatedReminder: ReminderEntity) {
         Thread {
@@ -309,19 +308,59 @@ class RemindersActivity : AppCompatActivity() {
         val updatedReminder = reminder.copy(isDone = true)
         Thread {
             reminderDao.updateReminder(updatedReminder)
-            val pendingIntent = PendingIntent.getBroadcast(
-                this,
-                reminder.id,
-                Intent(this, ReminderBroadcastReceiver::class.java),
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_NO_CREATE
-            )
-            pendingIntent?.cancel() // Entfernt die geplante Benachrichtigung
+
+            scheduleResetAtMidnight(reminder)
 
             runOnUiThread { loadReminders() }
         }.start()
     }
 
+    private fun scheduleResetAtMidnight(reminder: ReminderEntity) {
+        checkExactAlarmPermission()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+            if (!alarmManager.canScheduleExactAlarms()) {
+                val intent = Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                startActivity(intent)
+                return
+            }
+        }
 
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, ResetReminderReceiver::class.java).apply {
+            putExtra("reminder_id", reminder.id)
+        }
+        val pendingIntent = PendingIntent.getBroadcast(
+            this,
+            reminder.id,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        try {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+        } catch (e: SecurityException) {
+            e.printStackTrace()
+            Toast.makeText(this, "Berechtigung zum Planen von Alarme erforderlich.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun checkExactAlarmPermission() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+            if (!alarmManager.canScheduleExactAlarms()) {
+                val intent = Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                startActivity(intent)
+            }
+        }
+    }
 
     private fun displayReminders(reminders: List<ReminderEntity>) {
         val layout = findViewById<LinearLayout>(R.id.remindersSection)
@@ -349,6 +388,9 @@ class RemindersActivity : AppCompatActivity() {
             doneButton.text = "✔️"
             doneButton.isEnabled = false
         } else {
+            titleView.paintFlags = titleView.paintFlags and android.graphics.Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            doneButton.text = "Erledigt"
+            doneButton.isEnabled = true
             doneButton.setOnClickListener {
                 markReminderAsDone(reminder)
                 Toast.makeText(this, "${reminder.title} erledigt!", Toast.LENGTH_SHORT).show()
@@ -379,6 +421,29 @@ class RemindersActivity : AppCompatActivity() {
 
         return view
     }
+
+    //Schriftgröße
+    private fun updateGlobalTextSize() {
+        val sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE)
+        val textSize = sharedPreferences.getFloat("textSize", 14f)
+
+        val rootView = window.decorView.rootView
+        applyTextSizeToViewGroup(rootView, textSize)
+    }
+
+    private fun applyTextSizeToViewGroup(view: View, textSize: Float) {
+        when (view) {
+            is ViewGroup -> {
+
+                for (i in 0 until view.childCount) {
+                    applyTextSizeToViewGroup(view.getChildAt(i), textSize)
+                }
+            }
+            is TextView -> {
+                if (view.id != R.id.toolbarTitle) {
+                    view.textSize = textSize
+                }
+            }
+        }
+    }
 }
-
-
