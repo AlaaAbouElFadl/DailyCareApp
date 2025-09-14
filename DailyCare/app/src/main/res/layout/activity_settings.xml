@@ -48,7 +48,6 @@
             android:id="@+id/addButton"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/plus"
             android:contentDescription="Hinzufügen"
             app:tint="@android:color/white"
             android:layout_marginStart="16dp"

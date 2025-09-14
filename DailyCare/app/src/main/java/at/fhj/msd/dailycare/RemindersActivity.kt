@@ -27,6 +27,7 @@ class RemindersActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reminders)
         NavigationBarHelper().setupNavigationBar(this)
+        NavigationBarHelper().highlightActiveTab(this, Tab.REMINDERS)
         updateGlobalTextSize()
 
         db = Room.databaseBuilder(
@@ -49,23 +50,8 @@ class RemindersActivity : AppCompatActivity() {
         val switchMedikament = findViewById<Switch>(R.id.switchMedikament)
         val switchSicherheit = findViewById<Switch>(R.id.switchSicherheit)
 
-        switchMedikament.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                loadReminders("Medikament")
-                switchSicherheit.isChecked = false
-            } else if (!switchSicherheit.isChecked) {
-                loadReminders()
-            }
-        }
-
-        switchSicherheit.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                loadReminders("Sicherheit")
-                switchMedikament.isChecked = false
-            } else if (!switchMedikament.isChecked) {
-                loadReminders()
-            }
-        }
+        switchMedikament.setOnCheckedChangeListener { _, _ -> loadReminders() }
+        switchSicherheit.setOnCheckedChangeListener { _, _ -> loadReminders() }
 
         loadReminders()
     }
@@ -252,20 +238,22 @@ class RemindersActivity : AppCompatActivity() {
                     else -> null // Einmalige Erinnerung
                 }
 
-                // Überprüfung und Übergabe von Interval
+
+                val categoryEnabled = isCategoryEnabledInSettings(reminder.type)
+                if (!categoryEnabled) {
+
+                    loadReminders()
+                    return@runOnUiThread
+                }
+
+
                 if (interval != null) {
                     NotificationHelper(this).scheduleNotification(
-                        reminderId.toInt(),
-                        reminder.title,
-                        reminder.time,
-                        interval
+                        reminderId.toInt(), reminder.title, reminder.time, interval
                     )
                 } else {
                     NotificationHelper(this).scheduleNotification(
-                        reminderId.toInt(),
-                        reminder.title,
-                        reminder.time,
-                        0L
+                        reminderId.toInt(), reminder.title, reminder.time, 0L
                     )
                 }
 
@@ -291,15 +279,23 @@ class RemindersActivity : AppCompatActivity() {
     }
 
 
-    private fun loadReminders(type: String? = null) {
+    private fun loadReminders() {
         Thread {
-            val reminders = type?.let {
-                reminderDao.getRemindersByType(it)
-            } ?: reminderDao.getAllReminders()
+            val all = reminderDao.getAllReminders()
 
-            runOnUiThread {
-                displayReminders(reminders)
+            val bySettings = all.filter { isCategoryEnabledInSettings(it.type) }
+
+            val switchMed = findViewById<Switch>(R.id.switchMedikament).isChecked
+            val switchSec = findViewById<Switch>(R.id.switchSicherheit).isChecked
+
+            val byUi = when {
+                switchMed && !switchSec -> bySettings.filter { it.type == "Medikament" }
+                !switchMed && switchSec -> bySettings.filter { it.type == "Sicherheit" }
+                !switchMed && !switchSec -> emptyList()
+                else -> bySettings
             }
+
+            runOnUiThread { displayReminders(byUi) }
         }.start()
     }
 
@@ -446,4 +442,15 @@ class RemindersActivity : AppCompatActivity() {
             }
         }
     }
+
+
+    private fun isCategoryEnabledInSettings(type: String): Boolean {
+        val sp = getSharedPreferences("Settings", MODE_PRIVATE)
+        return when (type) {
+            "Medikament" -> sp.getBoolean("medicationNotifications", true)
+            "Sicherheit" -> sp.getBoolean("securityNotifications", true)
+            else -> true
+        }
+    }
+
 }

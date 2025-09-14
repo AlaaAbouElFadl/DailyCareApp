@@ -22,6 +22,7 @@ class EmergencyContactsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_emergency_contacts)
         NavigationBarHelper().setupNavigationBar(this)
+        NavigationBarHelper().highlightActiveTab(this, Tab.EMERGENCY)
         updateGlobalTextSize()
 
         db = Room.databaseBuilder(

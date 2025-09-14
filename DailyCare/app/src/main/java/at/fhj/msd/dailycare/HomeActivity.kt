@@ -4,12 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import at.fhj.msd.dailycare.NavigationBarHelper
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         NavigationBarHelper().setupNavigationBar(this)
+        NavigationBarHelper().highlightActiveTab(this, Tab.HOME)
 
         // Erinnerungen Button
         val btnReminders = findViewById<LinearLayout>(R.id.btnReminders)

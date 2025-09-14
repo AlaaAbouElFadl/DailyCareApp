@@ -16,6 +16,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         NavigationBarHelper().setupNavigationBar(this)
+        NavigationBarHelper().highlightActiveTab(this, Tab.SETTINGS)
         updateGlobalTextSize()
 
         val backButton = findViewById<ImageView>(R.id.backButton)
@@ -45,14 +46,17 @@ class SettingsActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
-        // Switch for medication
         val medicationSwitch = findViewById<Switch>(R.id.medicationSwitch)
+        val securitySwitch = findViewById<Switch>(R.id.securitySwitch)
+
+        val sp = getSharedPreferences("Settings", MODE_PRIVATE)
+        medicationSwitch.isChecked = sp.getBoolean("medicationNotifications", true)
+        securitySwitch.isChecked  = sp.getBoolean("securityNotifications", true)
+
         medicationSwitch.setOnCheckedChangeListener { _, isChecked ->
             saveNotificationPreference("medication", isChecked)
         }
 
-        // Switch for security
-        val securitySwitch = findViewById<Switch>(R.id.securitySwitch)
         securitySwitch.setOnCheckedChangeListener { _, isChecked ->
             saveNotificationPreference("security", isChecked)
         }
